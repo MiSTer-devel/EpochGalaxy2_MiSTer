@@ -168,11 +168,11 @@ localparam CONF_STR = {
 	"EpochGalaxyII;;",
 	"-;",
 	"O1,Aspect ratio,original,4:3;",
-	"O2,Mode,Ama,Pro;",
 	"-;",
 	"F,rom,Load File;", // remove
 	"-;",
 	"T0,Reset;",
+	"J0,Fire,Select,Start",
 	"R0,Reset and close OSD;",
 	"V,v",`BUILD_DATE
 };
@@ -262,10 +262,9 @@ wire hblank;
 wire vblank;
 assign CLK_VIDEO = clk_vid;
 wire [7:0] red, green, blue;
-wire pro = status[2];
 
-wire [3:0] prtAI = { joystick_0[4], joystick_0[4], joystick_0[4], pro };
-wire [3:0] prtBI = { 2'b11, joystick_0[2], joystick_0[3] };
+wire [3:0] prtAI = { 1'b1, joystick_0[0], joystick_0[1], joystick_0[4] };
+wire [3:0] prtBI = { 2'b11, joystick_0[6], joystick_0[5] };
 wire [3:0] prtCI;
 wire [3:0] prtDI;
 wire [3:0] prtC;
@@ -279,8 +278,8 @@ wire [2:0] prtI;
 wire rom_init = ioctl_download & (ioctl_addr >= 2*640*480);
 wire [11:0] rom_init_addr = ioctl_addr - 2*640*480;
 
-assign AUDIO_L = { prtI[2], 15'd0 };
-assign AUDIO_R = { prtI[2], 15'd0 };
+assign AUDIO_L = { prtE[3], 15'd0 };
+assign AUDIO_R = { prtE[3], 15'd0 };
 assign AUDIO_MIX = 2'd3;
 
 ucom43 ucom43(
